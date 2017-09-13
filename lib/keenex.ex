@@ -209,7 +209,7 @@ defmodule Keenex do
   def get_key(key_type) do
     case key_type do
       :write ->
-        Application.get_env(:keenex, :write_key, System.get_env("KEEN_WRITE_KEY")
+        Application.get_env(:keenex, :write_key, System.get_env("KEEN_WRITE_KEY"))
       :read ->
         Application.get_env(:keenex, :read_key, System.get_env("KEEN_READ_KEY"))
     end
