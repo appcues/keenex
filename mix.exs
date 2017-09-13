@@ -19,7 +19,6 @@ defmodule Keenex.Mixfile do
   def application do
     [
       applications: [:httpoison, :logger, :poison],
-      mod: {Keenex, []}
     ]
   end
 
