@@ -38,26 +38,6 @@ defmodule Keenex do
   [here](https://keen.io/docs/api/).
   """
 
-  use Application
-
-  @doc """
-  Starts Keenex app.
-  """
-  def start(_type, _args) do
-    project_id = Application.get_env(:keenex, :project_id, System.get_env("KEEN_PROJECT_ID"))
-    write_key  = Application.get_env(:keenex, :write_key , System.get_env("KEEN_WRITE_KEY" ))
-    read_key   = Application.get_env(:keenex, :read_key  , System.get_env("KEEN_READ_KEY"  ))
-    httpoison_opts = Application.get_env(:keenex, :httpoison_opts, [])
-
-    config = %{
-      project_id: project_id,
-      write_key: write_key,
-      read_key: read_key,
-      httpoison_opts: httpoison_opts,
-    }
-    Agent.start_link(fn -> config end, name: __MODULE__)
-  end
-
 
   @doc """
   Returns schema for a single event collection
@@ -229,19 +209,19 @@ defmodule Keenex do
   def get_key(key_type) do
     case key_type do
       :write ->
-        Agent.get(__MODULE__, fn(state) -> state.write_key end)
+        Application.get_env(:keenex, :write_key, System.get_env("KEEN_WRITE_KEY")
       :read ->
-        Agent.get(__MODULE__, fn(state) -> state.read_key end)
+        Application.get_env(:keenex, :read_key, System.get_env("KEEN_READ_KEY"))
     end
   end
 
   @doc false
   def project_id() do
-    Agent.get(__MODULE__, fn(state) -> state.project_id end)
+    Application.get_env(:keenex, :project_id, System.get_env("KEEN_PROJECT_ID"))
   end
 
   @doc false
   def httpoison_opts() do
-    Agent.get(__MODULE__, fn(state) -> state.httpoison_opts end)
+    Application.get_env(:keenex, :httpoison_opts, [])
   end
 end
